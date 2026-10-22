@@ -15,18 +15,29 @@ env/
 *.trt
 *.wts
 
+# Video and media files (large, keep locally)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.ts
+*.webm
+*.wmv
+*.webp
+*.jpeg
+*.jpg
+*.png
+*.bmp
+
 # Dataset images and labels (large, keep locally)
 data/frames/
 data/prelabels/
 data/person/images/
 data/person/labels/
+data/openimages_person/
 
-# Training run outputs (large)
-runs/*/weights/
-runs/**/events.out.tfevents.*
-runs/**/*.pt
-runs/**/*.onnx
-runs/**/*.engine
+# All training run outputs (large — weights, plots, CSVs)
+runs/
 
 # Reports images (generated, large)
 reports/fp_images/
