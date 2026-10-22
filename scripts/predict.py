@@ -99,8 +99,8 @@ def main():
 
     print(f"Running fine-tuned model ({best_weights.parent.parent.name}) ...")
     model_ft = YOLOE(str(best_weights))
-    if hasattr(model_ft, "set_classes"):
-        model_ft.set_classes(["person"])
+    # YOLOEPETrainer bakes class embeddings into weights — do NOT call set_classes()
+    # on a fine-tuned checkpoint; it corrupts the score tensor dimensions.
     result_ft = run_predict(model_ft, image_path, args.conf)
     n_ft = len(result_ft.boxes) if result_ft.boxes is not None else 0
 
