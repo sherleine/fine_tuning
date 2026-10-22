@@ -170,10 +170,13 @@ def main():
             else:
                 raise
 
-        # Find best weights
-        candidates = sorted(Path("runs").glob(f"{args.run_name}*/weights/best.pt"))
+        # Find best weights — search recursively because ultralytics may nest under runs/<task>/
+        candidates = sorted(Path("runs").glob(f"**/{args.run_name}*/weights/best.pt"))
         if not candidates:
-            candidates = sorted(Path("runs").glob(f"{args.run_name}*/weights/last.pt"))
+            candidates = sorted(Path("runs").glob(f"**/{args.run_name}*/weights/last.pt"))
+        if not candidates:
+            # Last resort: any best.pt anywhere under runs/
+            candidates = sorted(Path("runs").glob("**/weights/best.pt"))
         if not candidates:
             sys.exit("Training finished but best.pt not found under runs/. Check for errors above.")
         best_weights = candidates[-1]
