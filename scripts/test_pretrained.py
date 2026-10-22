@@ -55,8 +55,11 @@ def extract_metrics(results) -> dict:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data",   default="coco128.yaml",
-                        help="Dataset YAML (coco128.yaml for quick, coco.yaml for full)")
+    parser.add_argument("--data",   default="coco128-seg.yaml",
+                        help="Dataset YAML. Must have segmentation labels when using the -seg model.\n"
+                             "  Quick test : coco128-seg.yaml  (auto-downloads ~7 MB)\n"
+                             "  Full eval  : coco-seg.yaml     (auto-downloads ~1 GB)\n"
+                             "  Boxes-only : use yoloe-26s.pt (detection model) + coco128.yaml")
     parser.add_argument("--imgsz",  type=int, default=640)
     parser.add_argument("--conf",   type=float, default=0.25)
     args = parser.parse_args()
@@ -73,7 +76,12 @@ def main():
     model.set_classes(["person"])
 
     print(f"\nEvaluating on: {args.data}  (split=val, imgsz={args.imgsz})")
-    print("This will auto-download the dataset if not already cached.\n")
+    print("This will auto-download the dataset if not already cached.")
+    if "seg" not in args.data:
+        print("[WARN] You're using a detection-only dataset with the seg model.")
+        print("       Switch to coco128-seg.yaml or coco-seg.yaml to avoid errors.\n")
+    else:
+        print()
 
     results = model.val(
         data=args.data,

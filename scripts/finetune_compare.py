@@ -99,7 +99,12 @@ def print_comparison(baseline: dict, finetuned: dict):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data",       default="coco128.yaml")
+    parser.add_argument("--data",       default="coco128-seg.yaml",
+                        help="Dataset YAML. Seg model (yoloe-26s-seg.pt) needs segmentation labels.\n"
+                             "  Quick : coco128-seg.yaml | Full: coco-seg.yaml\n"
+                             "  Boxes-only proctoring data: use --model yoloe-26s.pt + plain coco128.yaml")
+    parser.add_argument("--model",      default="yoloe-26s-seg.pt",
+                        help="Base weights: yoloe-26s-seg.pt (seg data) or yoloe-26s.pt (boxes-only data)")
     parser.add_argument("--epochs",     type=int,   default=20)
     parser.add_argument("--imgsz",      type=int,   default=640)
     parser.add_argument("--batch",      type=int,   default=-1,
@@ -136,7 +141,7 @@ def main():
         print(f"  epochs={args.epochs}  imgsz={args.imgsz}  batch={args.batch}")
         print("=" * 55)
 
-        model = YOLOE("yoloe-26s-seg.pt")
+        model = YOLOE(args.model)
 
         try:
             model.train(
@@ -184,7 +189,8 @@ def main():
     # ------------------------------------------------------------------
     print(f"\nEvaluating fine-tuned model on {args.data} (split=val) ...")
     model_ft = YOLOE(str(best_weights))
-    model_ft.set_classes(["person"])
+    if hasattr(model_ft, "set_classes"):
+        model_ft.set_classes(["person"])
 
     results_ft = model_ft.val(
         data  = args.data,
