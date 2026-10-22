@@ -1,0 +1,35 @@
+# ============================================================
+# paths.yaml — all absolute paths used by the pipeline
+# Fill in the values marked <FILL_IN> before running any script.
+# ============================================================
+
+# Directory containing raw session videos
+# Example (Windows): D:/recordings/sessions
+# Example (Linux):   /data/recordings/sessions
+videos_dir: <FILL_IN>
+
+# Naming pattern for video files.
+# Use Python strptime-style tokens; the session ID and camera
+# must be capturable as named groups in a regex.
+# Example: "sess{session_id}_{camera}_{timestamp}.mp4"
+# Regex   : "sess(?P<session_id>[^_]+)_(?P<camera>primary|secondary)_.*\\.mp4"
+video_regex: "(?P<session_id>[^_/\\\\]+)_(?P<camera>primary|secondary)_.*\\.(?:mp4|avi|mov|mkv)"
+
+# Your current production YOLO weights (used for baseline comparison in Steps 4 & 6)
+# Set to null to skip the production-model baseline.
+production_weights: null   # e.g. D:/models/my_yolo.pt
+
+# Where extracted frames land (Step 1 output)
+frames_dir: data/frames
+
+# Where pre-labels land (Step 2 output)
+prelabels_dir: data/prelabels
+
+# Dataset root (Steps 3–7 read from here)
+dataset_dir: data/person
+
+# Where training runs are saved (Steps 5)
+runs_dir: runs
+
+# Where evaluation reports and images land (Step 6)
+reports_dir: reports

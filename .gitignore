@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Large model weights and exports (don't commit — re-download or keep locally)
+*.pt
+*.pth
+*.onnx
+*.engine
+*.trt
+*.wts
+
+# Dataset images and labels (large, keep locally)
+data/frames/
+data/prelabels/
+data/person/images/
+data/person/labels/
+
+# Training run outputs (large)
+runs/*/weights/
+runs/**/events.out.tfevents.*
+runs/**/*.pt
+runs/**/*.onnx
+runs/**/*.engine
+
+# Reports images (generated, large)
+reports/fp_images/
+reports/fn_images/
+
+# Ultralytics cache
+datasets/
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp

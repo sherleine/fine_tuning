@@ -1,0 +1,60 @@
+# ============================================================
+# train_person.yaml — hyperparameters for Steps 4, 5, 6, 7
+# ============================================================
+
+# --- Class list (drives pre-labelling, training, eval; add more here later) ---
+classes:
+  - person
+
+# --- Data ---
+imgsz: 640
+
+# --- Training ---
+epochs: 80
+patience: 15
+batch: -1           # -1 = ultralytics auto-batch (tries to fill ~60% VRAM)
+batch_fallback: 8   # retry value if auto-batch OOMs
+imgsz_fallback: 512 # retry imgsz if batch=8 still OOMs
+seed: 42
+workers: 4
+
+# --- Optimizer / LR schedule (ultralytics defaults are good starting points) ---
+optimizer: auto
+lr0: 0.01
+lrf: 0.01
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 3.0
+warmup_momentum: 0.8
+warmup_bias_lr: 0.1
+close_mosaic: 10
+
+# --- Augmentation ---
+hsv_h: 0.015
+hsv_s: 0.7
+hsv_v: 0.4
+degrees: 0.0
+translate: 0.1
+scale: 0.5
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.5
+mosaic: 1.0
+mixup: 0.0
+
+# --- Backbone freeze for partial-freeze run ---
+# Set to the index of the first non-backbone layer.
+# inspect_backbone: true will print layer names and exit so you can choose.
+freeze_n: 10        # layers 0..freeze_n-1 are frozen
+inspect_backbone: false
+
+# --- Evaluation ---
+conf_threshold_default: 0.25   # starting point; Step 6 tunes per model on val
+iou_threshold: 0.5
+low_light_luma_threshold: 60   # pixel mean below this = "low light" slice (0-255)
+
+# --- Benchmark ---
+warmup_frames: 50
+benchmark_frames: 1000
+trt_half: true      # FP16 TensorRT; set false to use FP32
